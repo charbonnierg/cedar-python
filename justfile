@@ -36,6 +36,10 @@ test:
 lock:
     uv sync --all-groups
 
+[group("package")]
+build:
+    uv build
+
 [group("docs")]
 docs:
     uv run mkdocs serve
