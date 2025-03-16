@@ -37,8 +37,12 @@ lock:
     uv sync --all-groups
 
 [group("package")]
-build:
-    uv build
+sdist:
+    uv build --sdist
+
+[group("package")]
+wheel:
+    uv build --wheel
 
 [group("docs")]
 docs:

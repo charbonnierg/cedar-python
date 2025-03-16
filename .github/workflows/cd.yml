@@ -8,7 +8,30 @@ on:
       - "v[0-9]+.[0-9]+.[0-9]"
 
 jobs:
-  build:
+  build-sdist:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Environment setup
+        uses: ./.github/actions/env-setup
+
+      - name: Build the package
+        run: just sdist
+
+      - name: Upload sdist to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: dist/*.tar.gz
+          tag: ${{ github.ref }}
+          overwrite: true
+          file_glob: true
+
+  build-wheel:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -23,22 +46,13 @@ jobs:
         uses: ./.github/actions/env-setup
 
       - name: Build the package
-        run: just build
+        run: just wheel
 
       - name: Upload wheel to release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: dist/*.whl
-          tag: ${{ github.ref }}
-          overwrite: true
-          file_glob: true
-
-      - name: Upload sdist to release
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: dist/*.tar.gz
           tag: ${{ github.ref }}
           overwrite: true
           file_glob: true
