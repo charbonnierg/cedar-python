@@ -39,6 +39,7 @@ markdown_extensions:
       permalink: "¤"
 
 plugins:
+  - mike
   - search
   - literate-nav:
       nav_file: SUMMARY.md
