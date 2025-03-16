@@ -5,7 +5,7 @@ Experiment with [cedar](https://cedarpolicy.com/) and [pyo3](https://pyo3.rs/v0.
 ## Install or update
 
 ```bash
-uv sync --frozen --reinstall-package cedar-python
+uv sync --frozen --all-groups --reinstall-package cedar-python
 ```
 
 This command must be run any time rust code is updated in order to use python bindings.
@@ -20,4 +20,16 @@ uv run pytest
 
 ```bash
 uv build
+```
+
+## View documentation
+
+```bash
+uv run mkdocs serve
+```
+
+## Build documentation
+
+```bash
+uv run mkdocs build
 ```

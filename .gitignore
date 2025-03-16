@@ -9,6 +9,11 @@ wheels/
 *.egg-info
 # Compiled code
 *.so
+# Docs
+site/
 # Virtual environments
 .venv
+# E2E test corpus
 e2e/corpus-tests/
+# IDE
+.vscode/

@@ -14,19 +14,6 @@ CORPUS_ARCHIVE = (
 
 @dataclass
 class Case:
-    """Each case has the following fields:
-
-    description: Description for the request
-    principal: Principal for the request (optional)
-    action: Action for the request (optional)
-    resource: Resource for the request (optional)
-    context: Context for the request
-    validateRequest: Whether to enable request validation (true/false)
-    decision: Expected decision (Allow/Deny)
-    reason: Expected policies that led to the decision
-    errors: Expected policies that resulted in errors
-    """
-
     description: str
     principal: dict[str, Any]
     action: dict[str, Any]
