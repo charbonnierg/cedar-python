@@ -19,4 +19,3 @@ runs:
       shell: bash
       run: |
         echo "${{ matrix.python-version }}" > .python-version
-        sed -i -e 's/pythonVersion = "3.9"/pythonVersion = "${{ matrix.python-version }}"/g' pyproject.toml

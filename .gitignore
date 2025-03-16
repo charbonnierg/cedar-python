@@ -1,5 +1,7 @@
 # Build
 /target
+# Python version
+.python-version
 # Python-generated files
 __pycache__/
 *.py[oc]
