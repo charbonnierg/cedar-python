@@ -1,0 +1,45 @@
+[
+  {
+    "uid": {
+      "type": "PhotoFlash::User",
+      "id": "alice"
+    },
+    "parents": [
+      {
+        "type": "PhotoFlash::UserGroup",
+        "id": "test-group"
+      }
+    ],
+    "attrs": {
+      "department": "A",
+      "jobLevel": 2
+    }
+  },
+  {
+    "uid": {
+      "type": "PhotoFlash::UserGroup",
+      "id": "test-group"
+    },
+    "parents": [],
+    "attrs": {}
+  },
+  {
+    "uid": {
+      "type": "PhotoFlash::Account",
+      "id": "accountA"
+    },
+    "parents": [],
+    "attrs": {
+      "admins": [
+        {
+          "type": "PhotoFlash::User",
+          "id": "alice"
+        }
+      ],
+      "owner": {
+        "type": "PhotoFlash::User",
+        "id": "alice"
+      }
+    }
+  }
+]

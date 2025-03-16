@@ -16,3 +16,4 @@ cedar-policy-formatter = { version = "4.3.3" }
 serde = { version = "1.0.0", features = ["derive", "rc"] }
 serde_json = "1.0.0"
 anyhow = "1.0.97"
+pythonize = "0.23.0"

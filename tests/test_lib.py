@@ -2,12 +2,13 @@ import json
 
 import pytest
 from cedar import (
-    AuthorizationDecision,
-    AuthorizationRequest,
+    Authorizer,
+    Decision,
     Entities,
-    Policies,
+    EntityUid,
+    PolicySet,
+    Request,
     format_policies,
-    is_authorized,
 )
 
 policies: str = """
@@ -70,11 +71,18 @@ json_policies = json.dumps(
 
 class TestPolicies:
     def test_to_json(self) -> None:
-        assert Policies(policies).to_json() == json_policies
+        assert PolicySet.from_string(policies).to_json() == json_policies
 
     def test_from_json(self) -> None:
         assert (
-            format_policies(Policies(json_policies).to_string()) == generated_policies
+            format_policies(PolicySet.from_json(json_policies).to_string())
+            == generated_policies
+        )
+
+    def test_from_json__init__(self) -> None:
+        assert (
+            format_policies(PolicySet.from_json(json_policies).to_string())
+            == generated_policies
         )
 
 
@@ -90,7 +98,7 @@ def test_format_error_policies() -> None:
 
 
 def test_policies_to_json() -> None:
-    assert Policies(policies).to_json() == json.dumps(
+    assert PolicySet.from_string(policies).to_json() == json.dumps(
         {
             "templates": {},
             "staticPolicies": {
@@ -125,19 +133,21 @@ def test_policies_to_json() -> None:
 
 def test_policies_from_json() -> None:
     assert (
-        format_policies(Policies(Policies(policies).to_json()).to_string())
+        format_policies(
+            PolicySet.from_json(PolicySet.from_string(policies).to_json()).to_string()
+        )
         == generated_policies
     )
 
 
 def test_error_invalid_policy_from_json() -> None:
     with pytest.raises(ValueError):
-        Policies("{")
+        PolicySet.from_json("{")
 
 
 def test_error_invalid_policy_to_json() -> None:
     with pytest.raises(ValueError):
-        Policies("toto")
+        PolicySet.from_json("toto")
 
 
 def test_is_authorized() -> None:
@@ -147,6 +157,7 @@ def test_is_authorized() -> None:
         resource in Album::"jane_vacation"
     );
     """
+    auth = Authorizer(policies=PolicySet.from_string(policies), schema=None)
     entities = """[
         {
             "uid": { "type": "User", "id": "alice" },
@@ -165,18 +176,17 @@ def test_is_authorized() -> None:
         }
     ]
     """
-    response = is_authorized(
-        request=AuthorizationRequest(
-            principal='User::"alice"',
-            action='Action::"view"',
-            resource='Photo::"VacationPhoto94.jpg"',
+    response = auth.is_authorized(
+        Request(
+            principal=EntityUid.from_type_name_and_id("User", "alice"),
+            action=EntityUid.from_type_name_and_id("Action", "view"),
+            resource=EntityUid.from_type_name_and_id("Photo", "VacationPhoto94.jpg"),
         ),
-        policies=Policies(policies),
-        entities=Entities(entities),
+        Entities.from_json(entities),
     )
-    assert response.decision == AuthorizationDecision.ALLOW
+    assert response.decision == Decision.Allow
     assert response.correlation_id is None
-    assert response.diagnostics.reasons == ["policy0"]
+    assert response.diagnostics.reasons == {"policy0"}
     assert response.diagnostics.errors == []
 
 
@@ -187,6 +197,7 @@ def test_is_not_authorized() -> None:
         resource in Album::"jane_vacation"
     );
     """
+    auth = Authorizer(policies=PolicySet.from_string(policies), schema=None)
     entities = """[
         {
             "uid": { "type": "User", "id": "alice" },
@@ -205,17 +216,16 @@ def test_is_not_authorized() -> None:
         }
     ]
     """
-    response = is_authorized(
-        request=AuthorizationRequest(
-            principal='User::"bob"',
-            action='Action::"view"',
-            resource='Photo::"VacationPhoto94.jpg"',
+    response = auth.is_authorized(
+        Request(
+            principal=EntityUid.from_type_name_and_id("User", "bob"),
+            action=EntityUid.from_type_name_and_id("Action", "view"),
+            resource=EntityUid.from_type_name_and_id("Photo", "VacationPhoto94.jpg"),
             context={"oidc_scope": "profile"},
         ),
-        policies=Policies(policies),
-        entities=Entities(entities),
+        Entities.from_json(entities),
     )
-    assert response.decision == AuthorizationDecision.DENY
+    assert response.decision == Decision.Deny
     assert response.correlation_id is None
-    assert response.diagnostics.reasons == []
+    assert response.diagnostics.reasons == set()
     assert response.diagnostics.errors == []

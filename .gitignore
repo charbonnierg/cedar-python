@@ -11,3 +11,4 @@ wheels/
 *.so
 # Virtual environments
 .venv
+e2e/corpus-tests/
