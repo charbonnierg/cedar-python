@@ -18,6 +18,7 @@ __all__ = [
     "ValidationResult",
     "format_policies",
     "is_authorized",
+    "is_authorized_batch",
 ]
 """Objects imported when using a star import"""
 

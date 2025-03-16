@@ -1,4 +1,10 @@
-site_name: "Cedar Python"
+site_name: "cedar-python"
+site_description: "Python bindings for cedar policy language."
+site_url: "https://charbonnierg.github.io/cedar-python"
+repo_url: "https://github.com/charbonnierg/cedar-python"
+repo_name: "charbonnierg/cedar-python"
+copyright: Copyright &copy; 2025 Guillaume Charbonnier
+edit_uri: edit/main/docs/
 
 theme:
   name: "material"
@@ -62,3 +68,12 @@ plugins:
             summary: true
             allow_inspection: true
             find_stubs_package: true
+
+extra:
+  version:
+    provider: mike
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/charbonnierg
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/cedar-python/

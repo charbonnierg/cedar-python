@@ -34,6 +34,9 @@ strict = true
 mypy_path = "python"
 files = "python"
 
+[tool.ruff]
+exclude = ["e2e/cedar-integration-tests"]
+
 [dependency-groups]
 dev = [
     "mypy>=1.15.0",
@@ -41,6 +44,7 @@ dev = [
     "ruff>=0.10.0",
 ]
 docs = [
+    "mike>=2.1.3",
     "mkdocs-literate-nav>=0.6.1",
     "mkdocs-material>=9.6.8",
     "mkdocstrings>=0.29.0",
