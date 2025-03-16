@@ -1,21 +1,28 @@
 [project]
 name = "cedar-python"
-version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 authors = [
     { name = "Guillaume Charbonnier", email = "gcharbonnier@fieldbox.ai" },
 ]
+dynamic = ["version"]
 requires-python = ">=3.9"
 dependencies = []
 
 [build-system]
-requires = ["setuptools", "setuptools-rust"]
+requires = ["setuptools", "setuptools-rust", "setuptools-scm>=8"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages]
 # Pure Python packages/modules
 find = { where = ["python"] }
+
+[tool.setuptools_scm]
+version_file = "python/cedar/__about__.py"
+version_file_template = """# file generated with setuptools_scm
+# don't change, don't track in version control
+__version__ = version = {version!r}
+__version_tuple__ = version_tuple = {version_tuple!r}"""
 
 [[tool.setuptools-rust.ext-modules]]
 # Private Rust extension module to be nested into the Python package

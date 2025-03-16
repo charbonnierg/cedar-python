@@ -48,4 +48,4 @@ deploy-docs:
 
     echo -e "Running command: mike deploy -u --push $VERSION $ALIAS"
 
-    uv run mike deploy -u --push $VERSION $ALIAS
+    uv run --group docs --no-group dev mike deploy -u --push $VERSION $ALIAS

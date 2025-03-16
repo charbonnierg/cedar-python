@@ -7,6 +7,8 @@ build/
 dist/
 wheels/
 *.egg-info
+# Generate code
+python/cedar/__about__.py
 # Compiled code
 *.so
 # Docs
